@@ -8,8 +8,8 @@ app = Flask(__name__)
 
 # Initialize OpenAI configuration
 openai_config = AzureOpenAI(
-    azure_endpoint="https://lmaolol.openai.azure.com/",
-    api_key="fbc3f8ca60344ec38dcf5134e25db039",
+    azure_endpoint="AZURE ENDPOINT",
+    api_key="API KEY",
     api_version="2024-02-15-preview"
 )
 
