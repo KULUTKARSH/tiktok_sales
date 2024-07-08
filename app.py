@@ -77,7 +77,7 @@ def generate_bi_report(data):
     return summary_stats
 
 def recognize_from_microphone():
-    speech_config = speechsdk.SpeechConfig(subscription="463f8dca2a7844b58257b59cf30a350e", region="eastus")
+    speech_config = speechsdk.SpeechConfig(subscription="", region="")
     speech_recognizer = speechsdk.SpeechRecognizer(speech_config=speech_config)
 
     print("Speak into your microphone.")
