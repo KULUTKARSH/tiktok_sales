@@ -109,6 +109,3 @@ The inspiration for this project came from the need to enhance the efficiency an
 - **User Security**: Handling user tokens securely and ensuring that sensitive information was not exposed was crucial and required careful implementation.
 - **Error Handling**: Ensuring robust error handling to provide clear and helpful feedback to users when something went wrong was essential for a smooth user experience.
 
-### License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
