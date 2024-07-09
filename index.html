@@ -71,19 +71,6 @@
         <div class="card mt-4">
             <div class="card-body">
                 <div class="form-group">
-                    <label for="bi_data">Enter BI Data (JSON format):</label>
-                    <textarea class="form-control" id="bi_data" rows="4"></textarea>
-                    <button class="btn btn-info mt-2" onclick="generateBIReport()">Generate BI Report</button>
-                </div>
-                <div class="output mt-4">
-                    <h3>BI Report:</h3>
-                    <pre id="bi_report" class="bg-light p-3"></pre>
-                </div>
-            </div>
-        </div>
-        <div class="card mt-4">
-            <div class="card-body">
-                <div class="form-group">
                     <label for="todoist_token">Enter your Todoist API Token:</label>
                     <input class="form-control" id="todoist_token" type="text">
                     <button class="btn btn-secondary mt-2" onclick="addTodosToTodoist()">Add to Todoist</button>
@@ -149,17 +136,6 @@
             });
             const data = await response.json();
             document.getElementById('sales_tips').innerText = data.sales_tips;
-        }
-
-        async function generateBIReport() {
-            const bi_data = document.getElementById('bi_data').value;
-            const response = await fetch('/generate_bi_report', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ data: JSON.parse(bi_data) })
-            });
-            const data = await response.json();
-            document.getElementById('bi_report').innerText = JSON.stringify(data.bi_report, null, 2);
         }
 
         async function recognizeFromMicrophone() {
