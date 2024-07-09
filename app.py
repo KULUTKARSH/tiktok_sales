@@ -1,16 +1,30 @@
+# app.py
 from flask import Flask, request, jsonify, render_template
 from openai import AzureOpenAI
-import pandas as pd
+import os
 import azure.cognitiveservices.speech as speechsdk
 from todoist_api_python.api import TodoistAPI
+from dotenv import load_dotenv
+
+
+# Load environment variables from .env file
+load_dotenv()
 
 app = Flask(__name__)
 
+
+# Get environment variables
+azure_openai_endpoint = os.getenv('AZURE_OPENAI_ENDPOINT')
+azure_openai_api_key = os.getenv('AZURE_OPENAI_API_KEY')
+azure_speech_key = os.getenv('AZURE_SPEECH_KEY')
+azure_speech_region = os.getenv('AZURE_SPEECH_REGION')
+azure_deployment = os.getenv("AZURE_DEPLOYMENT")
+
 # Initialize OpenAI configuration
 openai_config = AzureOpenAI(
-    azure_endpoint="AZURE ENDPOINT",
-    api_key="API KEY",
-    api_version="2024-02-15-preview"
+    azure_endpoint= azure_openai_endpoint,
+    api_key= azure_openai_api_key,
+    api_version= "2024-02-15-preview"
 )
 
 system_message = "You are a helpful assistant for sales support."
@@ -18,7 +32,7 @@ system_message = "You are a helpful assistant for sales support."
 # Define model functions
 def generate_response(prompt):
     response = openai_config.chat.completions.create(
-        model="haha",
+        model=azure_deployment,
         temperature=0.7,
         max_tokens=400,
         messages=[
@@ -37,7 +51,7 @@ def check_safeguard(text, avoid_phrases):
 
 def summarize_text(text):
     response = openai_config.chat.completions.create(
-        model="haha",
+        model= azure_deployment,
         temperature=0.7,
         max_tokens=150,
         messages=[
@@ -49,7 +63,7 @@ def summarize_text(text):
 
 def extract_todos(text):
     response = openai_config.chat.completions.create(
-        model="haha",
+        model=azure_deployment,
         temperature=0.7,
         max_tokens=100,
         messages=[
@@ -61,7 +75,7 @@ def extract_todos(text):
 
 def generate_sales_tips(topic):
     response = openai_config.chat.completions.create(
-        model="haha",
+        model=azure_deployment,
         temperature=0.7,
         max_tokens=150,
         messages=[
@@ -70,14 +84,8 @@ def generate_sales_tips(topic):
     )
     return response.choices[0].message.content.strip()
 
-def generate_bi_report(data):
-    df = pd.DataFrame(data)
-    summary_stats = df.describe().to_json()
-    # Add more detailed analysis as needed
-    return summary_stats
-
 def recognize_from_microphone():
-    speech_config = speechsdk.SpeechConfig(subscription="", region="")
+    speech_config = speechsdk.SpeechConfig(subscription=azure_speech_key, region=azure_speech_region)
     speech_recognizer = speechsdk.SpeechRecognizer(speech_config=speech_config)
 
     print("Speak into your microphone.")
@@ -130,12 +138,6 @@ def handle_generate_sales_tips():
     topic = request.json.get('topic')
     sales_tips = generate_sales_tips(topic)
     return jsonify(sales_tips=sales_tips)
-
-@app.route('/generate_bi_report', methods=['POST'])
-def handle_generate_bi_report():
-    data = request.json.get('data')
-    bi_report = generate_bi_report(data)
-    return jsonify(bi_report=bi_report)
 
 @app.route('/recognize_from_microphone', methods=['GET'])
 def handle_recognize_from_microphone():
